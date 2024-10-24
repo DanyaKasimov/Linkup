@@ -1,0 +1,17 @@
+:root {
+    --text-color-1: #363636;
+    --text-color-2: #5b5b5b;
+    --border-input: #9a9a9a;
+    --border-input-2: #dfdfdf;
+    --color-input: white;
+    --link-color-1: rgb(98, 0, 255);
+}
+
+body {
+    margin: 0;
+    padding: 0;
+}
+
+input {
+    outline: none;
+}

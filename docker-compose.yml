@@ -1,0 +1,97 @@
+version: '3.8'
+
+services:
+  application:
+    image: app-service
+    build: ./ApplicationService
+    container_name: application
+    ports:
+      - "8095:8095"
+    networks:
+      - app-network
+    depends_on:
+      - db
+      - redis
+      - rabbitmq
+
+  auth:
+    image: auth-service
+    build: ./AuthorizationService
+    container_name: auth
+    ports:
+      - "8090:8090"
+    networks:
+      - app-network
+    depends_on:
+      - db
+      - redis
+      - rabbitmq
+
+  frontend:
+    build: ./frontend
+    image: frontend
+    container_name: frontend
+    ports:
+      - "8080:80"
+    networks:
+      - app-network
+    depends_on:
+      - auth
+      - application
+
+  eureka-server:
+    image: eureka-server
+    container_name: eureka
+    build: ./EurekaServer
+    ports:
+      - "8761:8761"
+    networks:
+      - app-network
+
+  api-gateway:
+    image: api-gateway
+    container_name: gateway
+    build: ./Gateway
+    ports:
+      - "8787:8787"
+    networks:
+      - app-network
+
+  db:
+    image: postgres:15-alpine
+    container_name: db
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: root
+      POSTGRES_DB: chat
+    volumes:
+      - db-data:/var/lib/postgresql/data
+    networks:
+      - app-network
+    ports:
+      - "5432:5432"
+
+  redis:
+    image: redis:7-alpine
+    container_name: redis
+    networks:
+      - app-network
+    ports:
+      - "6379:6379"
+
+  rabbitmq:
+    image: rabbitmq:management-alpine
+    container_name: rabbitmq
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+    networks:
+      - app-network
+
+
+networks:
+  app-network:
+    driver: bridge
+
+volumes:
+  db-data:

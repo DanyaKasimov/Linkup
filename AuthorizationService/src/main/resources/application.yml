@@ -1,0 +1,89 @@
+server:
+  port: 8090
+
+spring:
+  application:
+    name: auth-service
+  datasource:
+    driver-class-name: org.postgresql.Driver
+    url: jdbc:postgresql://db:5432/chat
+    username: postgres
+    password: root
+  jpa:
+    hibernate:
+      ddl-auto: update
+    properties:
+      hibernate:
+        format_sql: true
+    show-sql: false
+  profiles:
+    active: dev
+  data:
+    redis:
+      host: redis
+      port: 6379
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    username: ivanemail1234567890@gmail.com
+    password: xdux kmya woic vnlf
+    protocol: smtp
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
+            required: true
+          connection timeout: 10000
+          timeout: 10000
+          write timeout: 10000
+          socketFactory:
+            port: 465
+            class: javax.net.ssl.SSLSocketFactory
+            fallback: false
+    debug: true
+
+  rabbitmq:
+    host: rabbitmq
+    port: 5672
+    username: guest
+    password: guest
+
+logging:
+  pattern:
+    file: "%d{yyyy-MMM-dd HH:mm:ss.SSS} %-5level [%thread] %logger{15} - %msg%n"
+    console: "%d{yyyy-MMM-dd HH:mm:ss.SSS} %-5level [%thread] %logger{15} - %msg%n"
+  level:
+    root: info
+    org:
+      springframework:
+        web: warn
+      hibernate: error
+    web: warn
+  file:
+    path: logs
+
+cors:
+  hosts: http://localhost:8080/
+
+auth:
+  jwt:
+    secret: a3dwap2awpokDopwad
+
+redis:
+  prefix: prefix:redis:email
+
+springdoc:
+  api-docs:
+    path: /v3/api-docs
+  swagger-ui:
+    path: /swagger-ui.html
+
+
+eureka:
+  client:
+    service-url:
+      defaultZone: http://eureka:8761/eureka/
+  instance:
+    preference-ip-address: true
