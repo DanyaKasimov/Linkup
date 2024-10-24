@@ -1,0 +1,68 @@
+server:
+  port: 8095
+
+spring:
+  application:
+    name: app-service
+
+  datasource:
+    driver-class-name: org.postgresql.Driver
+    username: postgres
+    password: root
+    url: jdbc:postgresql://db:5432/chat
+  jpa:
+    hibernate:
+      ddl-auto: update
+    properties:
+      hibernate:
+        format_sql: true
+    show-sql: false
+  profiles:
+    active: dev
+  data:
+    redis:
+      host: redis
+      port: 6379
+  rabbitmq:
+    host: rabbitmq
+    port: 5672
+    username: guest
+    password: guest
+
+logging:
+  file:
+    path: ./logs
+  pattern:
+    file: "%d{yyyy-MMM-dd HH:mm:ss.SSS} %-5level [%thread] %logger{15} - %msg%n"
+    console: "%d{yyyy-MMM-dd HH:mm:ss.SSS} %-5level [%thread] %logger{15} - %msg%n"
+  level:
+    root: info
+    org:
+      springframework:
+        web: warn
+      hibernate: error
+    web: warn
+
+cors:
+  hosts: "http://gateway:8787"
+
+redis:
+  prefix: "prefix:redis:email"
+
+springdoc:
+  api-docs:
+    path: /v3/api-docs
+  swagger-ui:
+    path: /swagger-ui.html
+
+auth:
+  jwt:
+    secret: a3dwap2awpokDopwad
+
+eureka:
+  client:
+    service-url:
+        defaultZone: http://eureka:8761/eureka/
+  instance:
+    preference-ip-address: true
+
