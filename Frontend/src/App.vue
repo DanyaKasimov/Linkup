@@ -1,11 +1,10 @@
 <template>
-  <router-view />
+  <router-view/>
+  <!--  <ProfileView/>-->
 </template>
 
 
-
-<script setup>
-</script>
+<script setup></script>
 
 
 <style scoped>

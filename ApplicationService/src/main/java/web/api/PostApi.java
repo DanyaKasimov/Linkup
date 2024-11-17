@@ -12,6 +12,8 @@ import org.springframework.web.bind.annotation.*;
 import web.dto.request.post.PostDto;
 import web.dto.response.ResponseDto;
 
+import java.util.UUID;
+
 
 @RequestMapping("api/v1/app/post")
 //@CrossOrigin("${cors.hosts}")
@@ -32,4 +34,36 @@ public interface PostApi {
     @PostMapping("/send")
     @ResponseStatus(HttpStatus.OK)
     ResponseDto sendPost(final @RequestBody PostDto dto);
+
+
+    @Operation(summary = "Удаление поста")
+    @ApiResponses(value = {
+            @ApiResponse(
+                    responseCode = "200",
+                    description = "Пост удален.",
+                    content = @Content(
+                            mediaType = "application/json",
+                            schema = @Schema(implementation = ResponseDto.class)
+                    )
+            ),
+            @ApiResponse(
+                    responseCode = "403",
+                    description = "Недостаточно прав.",
+                    content = @Content(
+                            mediaType = "application/json",
+                            schema = @Schema(implementation = ResponseDto.class)
+                    )
+            ),
+            @ApiResponse(
+                    responseCode = "404",
+                    description = "Пост не найден.",
+                    content = @Content(
+                            mediaType = "application/json",
+                            schema = @Schema(implementation = ResponseDto.class)
+                    )
+            )
+    })
+    @PostMapping("/delete/{id}")
+    @ResponseStatus(HttpStatus.OK)
+    ResponseDto deletePost(final @PathVariable UUID id);
 }

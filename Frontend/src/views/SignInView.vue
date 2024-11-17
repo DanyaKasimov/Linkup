@@ -33,7 +33,7 @@
 </template>
 
 <script setup>
-import LogoComponent from "@/components/icons/LogoComponent2.vue";
+import LogoComponent from "@/components/icons/loaders/LogoComponent2.vue";
 import poster from "@/assets/poster.mp4";
 import SignInComponent from "@/components/SignInComponent.vue"; // Импортируйте видеофайл
 </script>

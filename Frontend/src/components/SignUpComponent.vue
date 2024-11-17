@@ -106,10 +106,10 @@
 import {computed, ref, watch} from "vue";
 import {Api} from "@/api/Api"
 import poster from "@/assets/poster.mp4";
-import LoaderPointsComponent from "@/components/icons/LoaderPointsComponent.vue";
+import LoaderPointsComponent from "@/components/icons/loaders/LoaderPointsComponent.vue";
 import { useRouter } from 'vue-router';
 
-import LoaderSquareComponent from "@/components/icons/LoaderSquareComponent.vue";
+import LoaderSquareComponent from "@/components/icons/loaders/LoaderSquareComponent.vue";
 
 const sentRequest = ref(false)
 

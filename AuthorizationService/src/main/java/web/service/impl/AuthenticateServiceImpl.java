@@ -8,7 +8,6 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 import web.dto.request.SignInDto;
 import web.dto.request.SignUpDto;
 import web.exception.AuthInvalidException;
@@ -44,12 +43,11 @@ public class AuthenticateServiceImpl implements AuthenticateService {
         userService
                 .findByUsername(userDto.getUsername())
                 .orElseThrow(() -> new NoDataFoundException("Пользователь не найден.")
-        );
+                );
         return authenticate(userDto.getUsername(), userDto.getPassword());
     }
 
     @Override
-    @Transactional
     public String authenticateAndCreateUser(SignUpDto userDto) {
         userService.addUser(userDto);
         return authenticate(userDto.getUsername(), userDto.getPassword());

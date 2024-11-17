@@ -42,7 +42,7 @@ public  class  UserServiceImpl implements UserService {
             throw new InvalidDataException("Пользователь с таким username уже существует.");
         }
 
-        Email email = emailService.findByEmail(userDto.getEmail());
+        val email = emailService.findByEmail(userDto.getEmail());
         if (email == null || !email.getIsAccepted()) {
             throw new AccessErrorException("Почта не подтверждена.");
         }
@@ -53,7 +53,7 @@ public  class  UserServiceImpl implements UserService {
 
         val user = userRepository.save(userMapper.toEntity(userDto, passwordEncoder, email));
 
-        val info = new UserInfo();
+        var info = new UserInfo();
         info.setId(user.getId());
         userInfoRepository.save(info);
 

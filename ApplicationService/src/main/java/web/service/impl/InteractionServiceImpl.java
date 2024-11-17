@@ -40,7 +40,7 @@ public class InteractionServiceImpl implements InteractionService {
 
         List<AccountDataDto> allFriends = friends.getContent().stream()
                 .map(friend -> userService.getAccountData(
-                        friend.getUserTo().getId().equals(id) ? friend.getUserFrom() : friend.getUserTo()
+                        friend.getUserTo().getId().equals(id) ? friend.getUserFrom().getId() : friend.getUserTo().getId()
                 ))
                 .collect(Collectors.toList());
 
@@ -53,7 +53,8 @@ public class InteractionServiceImpl implements InteractionService {
     public void sendFriendRequest(final UUID id) {
         log.debug("Отправка запроса в список друзей: ID: {}", id);
 
-        val userFrom = userService.getCurrentUser();
+        val currentId = userService.getCurrentUserId();
+        val userFrom = userService.getUserById(currentId);
         val userTo = userService.getUserById(id);
 
         interactionRepository.findFriends(userFrom, userTo)
@@ -78,7 +79,8 @@ public class InteractionServiceImpl implements InteractionService {
     public void acceptFriendRequest(final UUID id) {
         log.debug("Добавление в список друзей: ID: {}", id);
 
-        val userTo = userService.getCurrentUser();
+        val currentId = userService.getCurrentUserId();
+        val userTo = userService.getUserById(currentId);
         val userFrom = userService.getUserById(id);
 
         val friends = interactionRepository.findFriendRequest(userTo, userFrom)
@@ -97,7 +99,8 @@ public class InteractionServiceImpl implements InteractionService {
     public void deleteFriendRequest(final UUID id) {
         log.debug("Удаление из списка друзей: ID: {}", id);
 
-        val userTo = userService.getCurrentUser();
+        val currentId = userService.getCurrentUserId();
+        val userTo = userService.getUserById(currentId);
         val userFrom = userService.getUserById(id);
 
         val friends = interactionRepository.findFriendRequest(userTo, userFrom)

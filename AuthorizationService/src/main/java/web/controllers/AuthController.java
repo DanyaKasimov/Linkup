@@ -2,9 +2,12 @@ package web.controllers;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.RestController;
 import web.api.AuthApi;
-import web.dto.request.*;
+import web.dto.request.EmailDto;
+import web.dto.request.SignInDto;
+import web.dto.request.SignUpDto;
+import web.dto.request.VerificationDto;
 import web.dto.response.ResponseDto;
 import web.service.AuthenticateService;
 import web.service.EmailService;
@@ -38,6 +41,7 @@ public class AuthController implements AuthApi {
     @Override
     public ResponseDto signup(final SignUpDto userAddDto) {
         log.info("Пришел запрос на регистрацию. Входные данные: {}", userAddDto);
+
 
         String jwt = authenticationService.authenticateAndCreateUser(userAddDto);
         return ResponseDto.builder().result(jwt).build();

@@ -6,8 +6,8 @@ import lombok.val;
 import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.RestController;
 import web.api.AccountApi;
-import web.dto.request.filter.Filter;
 import web.dto.request.account.UserUpdateDto;
+import web.dto.request.filter.Filter;
 import web.dto.response.ResponseDto;
 import web.service.UserService;
 
@@ -26,7 +26,8 @@ public class AccountController implements AccountApi {
     public ResponseDto getCurrentUserData() {
         log.info("Поступил запрос на получение данных авторизированного пользователя.");
 
-        val data = userService.getCurrentAccountData();
+        val user = userService.getCurrentUserId();
+        val data = userService.getAccountData(user);
         return ResponseDto.builder().result(data).build();
     }
 
@@ -53,7 +54,8 @@ public class AccountController implements AccountApi {
     public ResponseDto editCurrentUserData(final UserUpdateDto dto) {
         log.info("Поступил запрос на редактирование данных пользователя. Входные данные: {}", dto);
 
-        userService.editCurrentUserData(dto);
+        val id = userService.getCurrentUserId();
+        userService.editUserData(id, dto);
         return ResponseDto.builder().result("Данные пользователя изменены.").build();
     }
 
@@ -71,7 +73,8 @@ public class AccountController implements AccountApi {
     public ResponseDto deleteCurrentUser() {
         log.info("Поступил запрос на удаление авторизированного пользователя.");
 
-        userService.deleteCurrentUser();
+        val id = userService.getCurrentUserId();
+        userService.deleteUser(id);
         return ResponseDto.builder().result("Пользователь удален.").build();
     }
 }

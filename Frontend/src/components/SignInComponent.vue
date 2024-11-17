@@ -69,7 +69,7 @@ import {Api} from "@/api/Api"
 
 import poster from "@/assets/poster.mp4";
 import { useRouter } from 'vue-router';
-import LoaderSquareComponent from "@/components/icons/LoaderSquareComponent.vue";
+import LoaderSquareComponent from "@/components/icons/loaders/LoaderSquareComponent.vue";
 
 const sentRequest = ref(false)
 const api = new Api()

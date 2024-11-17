@@ -11,9 +11,9 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import web.dto.request.account.UserUpdateDto;
 import web.dto.request.filter.Filter;
 import web.dto.request.filter.Item;
-import web.dto.request.account.UserUpdateDto;
 import web.dto.response.AccountDataDto;
 import web.exception.NoDataFoundException;
 import web.mappers.AvatarMapper;
@@ -50,22 +50,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public List<AccountDataDto> getAccountsData(final List<UUID> ids) {
-         return ids.stream().map(this::getData).toList();
-    }
-
-
-    @Override
-    public AccountDataDto getCurrentAccountData() {
-        val id = getCurrentUserId();
-        return getData(id);
-    }
-
-
-    @Override
-    @Transactional
-    public void deleteCurrentUser() {
-        val id = getCurrentUserId();
-        deleteUser(id);
+        return ids.stream().map(this::getAccountData).toList();
     }
 
 
@@ -73,14 +58,6 @@ public class UserServiceImpl implements UserService {
     @Transactional
     public void deleteUsers(final List<UUID> ids) {
         ids.forEach(this::deleteUser);
-    }
-
-
-    @Override
-    @Transactional
-    public void editCurrentUserData(final UserUpdateDto dto) {
-        val id = getCurrentUserId();
-        editUserData(id, dto);
     }
 
 
@@ -108,25 +85,18 @@ public class UserServiceImpl implements UserService {
     }
 
 
+    @Override
     @Transactional
     @CacheEvict(value = {"account.data", "user.data"}, key = "#id")
     public void deleteUser(final UUID id) {
         log.debug("Удаление данных пользователя с ID: {}", id);
 
-        val user = userRepository
+        var user = userRepository
                 .findByIdAndIsDeletedFalse(id)
                 .orElseThrow(() -> new NoDataFoundException("Пользователь с ID = " + id + " не найден."));
 
         user.setIsDeleted(true);
         userRepository.save(user);
-    }
-
-
-    private AccountDataDto getData(final UUID id) {
-        log.debug("Получение данных пользователя с ID: {}", id);
-
-        val user = getUserById(id);
-        return getAccountData(user);
     }
 
 
@@ -142,7 +112,7 @@ public class UserServiceImpl implements UserService {
         Page<User> page = userRepository.findAll(Specifications.hasField(criteria), pageable);
 
         val data = page.getContent().stream()
-                .map(this::getAccountData)
+                .map(user -> getAccountData(user.getId()))
                 .toList();
 
         return new PageImpl<>(data, pageable, page.getTotalElements());
@@ -161,13 +131,6 @@ public class UserServiceImpl implements UserService {
 
 
     @Override
-    public User getCurrentUser() {
-        val id = getCurrentUserId();
-        return getUserById(id);
-    }
-
-    /// TODO Проверь работает ли кэш
-    @Override
     @Cacheable(value = "user.data", key = "#id")
     public User getUserById(final UUID id) {
         return userRepository
@@ -175,15 +138,19 @@ public class UserServiceImpl implements UserService {
                 .orElseThrow(() -> new NoDataFoundException("Пользователь с ID = " + id + " не найден."));
     }
 
-    /// TODO Проверь работает ли кэш
+
     @Override
-    @Cacheable(value = "account.data", key = "#user.id")
-    public AccountDataDto getAccountData(User user) {
-        val avatars = avatarService.getAvatarsByUserId(user.getId());
+    @Cacheable(value = "account.data", key = "#id")
+    public AccountDataDto getAccountData(UUID id) {
+        log.info("Получение данных пользователя. ID: {}", id);
+
+        val avatars = avatarService.getAvatarsByUserId(id);
 
         val info = infoRepository
-                .findById(user.getId())
+                .findById(id)
                 .orElseThrow(() -> new NoDataFoundException("Информация о пользователе не найдена."));
+
+        val user = getUserById(id);
 
         return AccountDataDto.builder()
                 .user(userMapper.toDto(user))

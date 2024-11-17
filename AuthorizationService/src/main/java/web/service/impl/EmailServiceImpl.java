@@ -1,6 +1,7 @@
 package web.service.impl;
 
 import lombok.RequiredArgsConstructor;
+import lombok.val;
 import org.springframework.amqp.rabbit.annotation.RabbitListener;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,9 +36,9 @@ public class EmailServiceImpl implements EmailService {
 
     @RabbitListener(queues = RabbitConstants.QUEUE_1)
     public void processEmailMessage(EmailBodyDto emailDto) throws MessagingException {
-        String to = emailDto.getTo();
-        String subject = emailDto.getSubject();
-        String body = generateEmailBody(emailDto);
+        val to = emailDto.getTo();
+        val subject = emailDto.getSubject();
+        val body = generateEmailBody(emailDto);
         sendEmail(to, subject, body);
     }
 
@@ -47,8 +48,8 @@ public class EmailServiceImpl implements EmailService {
             throw new InvalidDataException("Электронная почта уже существует.");
         }
 
-        String email = emailDto.getEmail();
-        String code = verificationService.generateVerificationCode();
+        val email = emailDto.getEmail();
+        val code = verificationService.generateVerificationCode();
         verificationService.storeVerificationCode(email, code);
 
         EmailBodyDto body = EmailBodyDto.builder()
@@ -82,7 +83,7 @@ public class EmailServiceImpl implements EmailService {
         }
 
         if (!emailRepository.existsByEmail(verificationDto.getEmail())) {
-            Email email = Email.builder()
+            val email = Email.builder()
                     .email(verificationDto.getEmail())
                     .isAccepted(true)
                     .build();

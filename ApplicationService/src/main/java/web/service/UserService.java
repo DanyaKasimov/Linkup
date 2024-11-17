@@ -3,8 +3,8 @@ package web.service;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
-import web.dto.request.filter.Filter;
 import web.dto.request.account.UserUpdateDto;
+import web.dto.request.filter.Filter;
 import web.dto.response.AccountDataDto;
 import web.model.User;
 
@@ -16,9 +16,7 @@ public interface UserService {
 
     User getUserById(UUID id);
 
-    AccountDataDto getAccountData(User user);
-
-    AccountDataDto getCurrentAccountData();
+    AccountDataDto getAccountData(UUID userId);
 
     List<AccountDataDto> getAccountsData(final List<UUID> ids);
 
@@ -26,13 +24,9 @@ public interface UserService {
 
     UUID getCurrentUserId();
 
-    User getCurrentUser();
-
-    void editCurrentUserData(final UserUpdateDto dto);
-
     void editUserData(final UUID id, final UserUpdateDto dto);
 
-    void deleteCurrentUser();
+    void deleteUser(final UUID id);
 
     void deleteUsers(List<UUID> ids);
 

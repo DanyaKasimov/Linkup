@@ -33,10 +33,10 @@
 </template>
 
 <script setup>
-import LogoComponent from "@/components/icons/LogoComponent2.vue";
+import LogoComponent from "@/components/icons/loaders/LogoComponent2.vue";
 import poster from "@/assets/poster.mp4";
 import SignUpComponent from "@/components/SignUpComponent.vue";
-import LoaderSquareComponent from "@/components/icons/LoaderSquareComponent.vue";
+import LoaderSquareComponent from "@/components/icons/loaders/LoaderSquareComponent.vue";
 import {onMounted, ref} from "vue";
 
 const loading = ref(true)

@@ -9,10 +9,8 @@ public class PostDto {
 
     private String message;
 
-    private UUID userFrom;
+    private UUID userId;
 
     private byte[] image;
-
-
 
 }

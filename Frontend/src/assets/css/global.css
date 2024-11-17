@@ -1,10 +1,21 @@
 :root {
     --text-color-1: #363636;
     --text-color-2: #5b5b5b;
+
     --border-input: #9a9a9a;
     --border-input-2: #dfdfdf;
+
     --color-input: white;
+
+    --bg-color-1: white;
+    --bg-color-2: #e3e3e3;
+    --bg-color-3: white;
+
     --link-color-1: rgb(98, 0, 255);
+
+    --icon-color-1: #444444;
+
+    --block-size-1: 50%;
 }
 
 body {
