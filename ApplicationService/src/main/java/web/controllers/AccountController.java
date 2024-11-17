@@ -26,8 +26,8 @@ public class AccountController implements AccountApi {
     public ResponseDto getCurrentUserData() {
         log.info("Поступил запрос на получение данных авторизированного пользователя.");
 
-        val user = userService.getCurrentUserId();
-        val data = userService.getAccountData(user);
+        val id = userService.getCurrentUserId();
+        val data = userService.getAccountData(id);
         return ResponseDto.builder().result(data).build();
     }
 
